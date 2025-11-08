@@ -19,3 +19,7 @@ jobs:
       - name: Install dependencies
         working-directory: tests
         run: npm install
+
+      - name: Run playwright tests
+        working-directory: tests
+        run: npm test
