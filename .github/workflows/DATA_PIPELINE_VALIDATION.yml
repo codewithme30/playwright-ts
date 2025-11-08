@@ -12,6 +12,8 @@ jobs:
         run: |
           docker --version
           docker compose version
+          docker info
+          docker ps
 
       - name: checkout repository
         uses: actions/checkout@v4
