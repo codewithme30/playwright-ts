@@ -17,5 +17,5 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        working-directory: ../../tests/
+        working-directory: tests
         run: npm install
