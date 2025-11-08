@@ -5,7 +5,7 @@ services:
     container_name: target_1
     working_dir: /app
     volumes:
-      - "C:/Users/mazhe/Downloads/Cribl/project/app_t1:/app"      
+      - "./app_t1:/app"
     command: /bin/sh -c "node app.js target > /app/logs/target_1.log 2>&1"
     
 
@@ -14,7 +14,7 @@ services:
     container_name: target_2
     working_dir: /app
     volumes:
-      - "C:/Users/mazhe/Downloads/Cribl/project/app_t2:/app"
+      - "./app_t2:/app"
     command: ["node", "app.js", "target"]
     
 
@@ -23,7 +23,7 @@ services:
     container_name: splitter
     working_dir: /app
     volumes:
-      - "C:/Users/mazhe/Downloads/Cribl/project/app:/app"
+      - "./app:/app"
     command: ["node", "app.js", "splitter"]
     depends_on:
       - target_1
@@ -34,7 +34,7 @@ services:
     container_name: agent
     working_dir: /app
     volumes:
-      - "C:/Users/mazhe/Downloads/Cribl/project/app:/app"
+      - "./app:/app"
     command: ["node", "app.js", "agent"]
     depends_on:
       - splitter
