@@ -1,6 +1,6 @@
 # Logs
 logs
-*.log
+#*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -38,7 +38,7 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
+tests/node_modules/
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
