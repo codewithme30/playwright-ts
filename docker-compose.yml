@@ -6,8 +6,7 @@ services:
     working_dir: /app
     volumes:
       - "./app_t1:/app"
-    command: /bin/sh -c "node app.js target > /app/logs/target_1.log 2>&1"
-    
+    command: ["node", "app.js", "target"]
 
   target_2:
     build: .
@@ -16,7 +15,6 @@ services:
     volumes:
       - "./app_t2:/app"
     command: ["node", "app.js", "target"]
-    
 
   splitter:
     build: .
