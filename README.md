@@ -26,12 +26,13 @@ Automation is built using **Playwright (TypeScript)** and **Docker Compose**, si
 
 Before running the tests locally, ensure the following are installed:
 
-| Tool | Minimum Version | Command to Verify |
-|------|------------------|-------------------|
-| Node.js | 18+ | `node -v` |
-| npm | 9+ | `npm -v` |
-| Docker Desktop / Engine | 27+ | `docker --version` |
-| Docker Compose | v2+ | `docker compose version` |
+| Tool                    | Minimum Version | Command to Verify        |
+|-------------------------|-----------------|--------------------------|
+| Git                     | 2.30+           | `git --version`          |
+| Node.js                 | 18+             | `node -v`                |
+| npm                     | 9+              | `npm -v`                 |
+| Docker Desktop / Engine | 27+             | `docker --version`       |
+| Docker Compose          | v2+             | `docker compose version` |
 
 ## Running Tests Locally
 
@@ -60,7 +61,7 @@ If the Docker daemon is not running, start it manually or use:
 
 
 
-### 3. Run test suite
+### 4. Run test suite
 From the /tests directory:
 
     npm test

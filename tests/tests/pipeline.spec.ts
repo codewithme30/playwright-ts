@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import * as path from 'path';
 import * as fs from 'fs';
 import { dcUpTargets, dcUpSplitter, dcUpAgent, dcDown, waitForContainerExit } from '../utils/docker';
-import { waitForFilesStable } from '../utils/common';
+import { waitForFilesStable, exists, read, norm, toRecords, waitForFile} from '../utils/common';
 
 const APP_DIR = path.resolve(__dirname, '../../app');
 const APP_DIR_T1 = path.resolve(__dirname, '../../app_t1');
@@ -12,34 +12,18 @@ const INPUT_FILE  = path.join(APP_DIR, 'agent/inputs',   'large_1M_events.log');
 const TARGET1_OUT = path.join(APP_DIR_T1, 'events.log');  
 const TARGET2_OUT = path.join(APP_DIR_T2, 'events.log');  
 
-function exists(p: string) { return fs.existsSync(p); }
-function read(p: string) { return fs.readFileSync(p, 'utf-8'); }
-function norm(s: string) { return s.replace(/\r\n/g, '\n'); }
-function toRecords(s: string): string[] {
-  return s
-    .replace(/\r\n/g, '\n')
-    .split('\n')
-    .map(l => l.trim())
-    .filter(l => l.length > 0);
-}
-
-async function waitForFile(p: string, ms = 20_000) {
-  const start = Date.now();
-  return new Promise<void>((resolve, reject) => {
-    const t = setInterval(() => {
-      if (fs.existsSync(p)) { clearInterval(t); resolve(); }
-      else if (Date.now() - start > ms) { clearInterval(t); reject(new Error(`Timeout waiting for: ${p}`)); }
-    }, 250);
-  });
-}
-
 test.describe('Validate data pipeline', () => {
   test.describe.configure({ mode: 'default' });
   let t1_records:string[] = [];
   let t2_records:string[] = [];
   let input_records:string[] = [];
   let target_records:string[] = [];
-  
+
+  /*
+  * Spins up docker containers (host) for Target (T1 and T2), Splitter and Agent
+  * Waits for agent container to stop, event.log files to be available and files to be stable
+  * Reads records from traget locations and input files for further validations
+  */
   test.beforeAll(async () => {
     
     if (!exists(path.join(APP_DIR, 'app.js'))) {
@@ -86,21 +70,21 @@ test.describe('Validate data pipeline', () => {
   test('validate input file record count matches with target_1 and target_2 record count.', async() =>{
     console.log(`Input records: ${input_records.length}, Target_1 + Target_2 records: ${target_records.length}`);
     expect(target_records.length, 'Target files records count should match input').toBe(input_records.length);
-  })
+  });
 
-  /* 
+  /*
+  Verifies both target nodes are actively receiving data
   Ensures output files exist and are non-empty
   */
   test('verify event logs are generated and record count is greater than zero.', async () =>{
     console.log(`t1_records: ${t1_records.length}, t2_records: ${t2_records.length}`);
     expect(t1_records.length, 'Target1 record count should be greater than 0').toBeGreaterThan(0);
     expect(t2_records.length, 'Target2 record count should be greater than 0').toBeGreaterThan(0);
-  });  
+  });
 
-
-  /* 
-  Validate  missing or duplicat records
-  across both targets (t1 and t2) relative to the input file.
+  /*
+  Verifies full data integrity at content level:
+  Detects missing and duplicate or invalid records across both targets (t1 and t2) relative to the input file.
   */
   test('verify if there are any missing, duplicate records', async() =>{
 
