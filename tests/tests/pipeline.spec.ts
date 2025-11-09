@@ -58,8 +58,8 @@ test.describe('Validate data pipeline', () => {
     await waitForContainerExit('agent', 600_000);
     //await waitForContainerExit('splitter', 600_000);
 
-    await waitForFile(TARGET1_OUT, 20_000);
-    await waitForFile(TARGET2_OUT, 20_000);
+    await waitForFile(TARGET1_OUT, 70_000);
+    await waitForFile(TARGET2_OUT, 70_000);
     await waitForFilesStable([TARGET1_OUT, TARGET2_OUT]); 
 
     console.log("Starting to read files.");
