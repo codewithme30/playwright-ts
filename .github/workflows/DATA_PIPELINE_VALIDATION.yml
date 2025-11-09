@@ -27,7 +27,27 @@ jobs:
         working-directory: tests
         run: |
           npm install
-          npm test
+
+      - name: Execute Tests
+        working-directory: tests
+        run: |
+          npm test    
+
+      - name: Upload target_1 events log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: target_1_events_log
+          path: app_t1/events.log
+          if-no-files-found: ignore
+
+      - name: Upload target_2 events log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: target_2_events_log
+          path: app_t2/events.log
+          if-no-files-found: ignore
 
       - name: Upload Playwright report
         if: always()
