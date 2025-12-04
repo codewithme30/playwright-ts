@@ -7,6 +7,10 @@
         {
             "host" : "target_2",
             "port" : 9997
+        },
+        {
+            "host" : "target_3",
+            "port" : 9997
         }
     ]
 }

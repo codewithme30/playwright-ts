@@ -48,3 +48,8 @@ export async function waitForFile(p: string, ms = 20_000) {
         }, 250);
     });
 }
+
+export function isValidRecord(line: string): boolean {
+    const RECORD_PATTERN = /^This is event number \d+$/;
+    return RECORD_PATTERN.test(line);
+}

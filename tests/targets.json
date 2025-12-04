@@ -1,0 +1,5 @@
+  [
+    {"name":  "target_1", "output_path":  "../app_t1/events.log"},
+    {"name":  "target_2", "output_path":  "../app_t2/events.log"},
+    {"name":  "target_3", "output_path":  "../app_t3/events.log"}
+  ]
