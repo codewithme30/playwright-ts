@@ -75,3 +75,26 @@ This command will:
    * Record counts match between input and output.
    * No missing or duplicate records exist.
 4. Stop and clean up all containers after completion.
+
+## Sample Tests (Web, API, Database)
+
+`tests/samples/` contains standalone example tests that demonstrate the three
+common testing layers using real, publicly available applications. They run
+under a separate config (`playwright.samples.config.ts`) so they never trigger
+the Docker-based pipeline setup above.
+
+| Layer | File | Target | Notes |
+|-------|------|--------|-------|
+| Web UI | `samples/web.spec.ts` | [saucedemo.com](https://www.saucedemo.com) (Sauce Labs' QA demo store) and [playwright.dev](https://playwright.dev) | Login, cart, and sorting flows via real browser automation |
+| API | `samples/api.spec.ts` | [jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com) | GET/POST/PUT/DELETE against a public demo REST API |
+| Database | `samples/database.spec.ts` | Node's built-in `node:sqlite` engine | Schema, joins, constraints, and transaction rollback against a real embedded SQL database (kept local/in-memory since arbitrary demo DB servers aren't reachable or writable from CI) |
+
+Run them all:
+
+    cd tests
+    npm install
+    npx playwright install chromium   # only needed once, for the web tests
+    npm run test:samples
+
+Or individually: `npm run test:web`, `npm run test:api`, `npm run test:db`.
+View the HTML report afterwards with `npm run report:samples`.

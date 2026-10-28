@@ -7,7 +7,12 @@
     "test:ui": "playwright test --ui",
     "report": "playwright show-report",
     "build": "tsc -p .",
-    "clean": "rimraf dist || true"
+    "clean": "rimraf dist || true",
+    "test:samples": "playwright test --config=playwright.samples.config.ts",
+    "test:web": "playwright test --config=playwright.samples.config.ts --project=web",
+    "test:api": "playwright test --config=playwright.samples.config.ts --project=api",
+    "test:db": "playwright test --config=playwright.samples.config.ts --project=database",
+    "report:samples": "playwright show-report playwright-report-samples"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
